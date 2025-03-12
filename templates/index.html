@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moeda</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Dólar</h1>
+        <p class="cotacao">Cotação atual: R$ {{ cotacao }}</p>
+        <input type="number" id="valor" placeholder="Digite o valor em reais" />
+        <button onclick="converter()">Converter</button>
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

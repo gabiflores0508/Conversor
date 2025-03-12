@@ -1,0 +1,105 @@
+/* Fonte global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #00c6ff, #0072ff); /* Gradiente de fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+}
+
+.container {
+    text-align: center;
+    padding: 40px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.95); /* Fundo mais claro */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px; /* Aumentando o tamanho máximo */
+    z-index: 2;
+}
+
+.container:hover {
+    transform: scale(1.05);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.cotacao {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #28a745;
+    transition: color 0.3s ease;
+}
+
+input {
+    padding: 12px;
+    font-size: 1.1rem;
+    width: 80%;
+    margin-bottom: 20px;
+    border: 2px solid #0072ff;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.2);
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    background-color: #0072ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(1);
+}
+
+.resultado {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilos responsivos */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    .container {
+        padding: 25px;
+        width: 90%;
+    }
+
+    input, button {
+        width: 100%;
+    }
+}
