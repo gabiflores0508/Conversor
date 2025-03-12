@@ -1,5 +1,5 @@
 import pytest
-from cotacao import buscar_cotacao, converter_valor
+from fucntion.cotacao import buscar_cotacao, converter_valor
 
 
 @pytest.fixture
