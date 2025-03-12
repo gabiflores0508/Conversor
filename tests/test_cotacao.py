@@ -1,35 +1,58 @@
 import pytest
-from function.cotacao import buscar_cotacao, converter_valor
+import requests
+from unittest.mock import patch
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
+from app import buscar_cotacao
 
 
-@pytest.fixture
-def mock_cotacao():
-    return 5.0  # Simula uma cotação do dólar
+def test_buscar_cotacao_valida():
+    # Usando patch para simular a resposta da API
+    mock_response = {"USDBRL": {"bid": "5.29"}}
+
+    with patch("requests.get") as mock_get:
+        # Simulando a resposta da API
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = mock_response
+
+        # Executando a função e verificando o valor retornado
+        cotacao = buscar_cotacao()
+
+        # Verificando se a cotação foi retornada corretamente
+        assert cotacao == 5.29, f"Esperado 5.29, mas obteve {cotacao}"
 
 
-def test_buscar_cotacao(monkeypatch):
-    """Testa se a função buscar_cotacao retorna um valor válido"""
+def test_buscar_cotacao_erro_requisicao():
+    # Simulando um erro de requisição (por exemplo, API fora do ar)
+    with patch("requests.get") as mock_get:
+        # Simulando um erro de rede (requisição falhou)
+        mock_get.side_effect = requests.exceptions.RequestException("Erro de rede")
 
-    class MockResponse:
-        @staticmethod
-        def json():
-            return {"USDBRL": {"bid": "5.25"}}
+        # Executando a função e verificando se retorna None
+        cotacao = buscar_cotacao()
 
-        def raise_for_status(self):
-            pass
-
-    def mock_get(*args, **kwargs):
-        return MockResponse()
-
-    monkeypatch.setattr("requests.get", mock_get)
-    cotacao = buscar_cotacao()
-    assert cotacao == 5.25
+        # Verificando que a cotação é None, pois houve erro
+        assert cotacao is None, "Esperado None devido a erro de requisição"
 
 
-def test_converter_valor(mock_cotacao):
-    """Testa conversões corretas"""
-    assert converter_valor(10, mock_cotacao) == 2.0
-    assert converter_valor(50, mock_cotacao) == 10.0
-    assert converter_valor(0, mock_cotacao) is None  # Testa valor zero
-    assert converter_valor(-5, mock_cotacao) is None  # Testa valor negativo
-    assert converter_valor(10, None) is None  # Testa cotação inválida
+def test_buscar_cotacao_erro_json():
+    # Simulando uma resposta que não contém a chave esperada
+    mock_response = {"USDBRL": {"bid": "invalid_value"}}
+
+    with patch("requests.get") as mock_get:
+        # Simulando a resposta da API
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = mock_response
+
+        # Executando a função e verificando se trata corretamente o valor inválido
+        cotacao = buscar_cotacao()
+
+        # Verificando que a cotação será None porque a conversão para float falhou
+        assert cotacao is None, "Esperado None devido a erro de conversão de valor"
+
+
+if __name__ == "__main__":
+    pytest.main()
